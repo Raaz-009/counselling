@@ -8,7 +8,6 @@ CREATE TABLE student_details (
     department VARCHAR(50),
     semester INT,
         Bio TEXT,
-
     tenth_aggr FLOAT,
     twelveth_aggr FLOAT,
     engg_aggr FLOAT,
