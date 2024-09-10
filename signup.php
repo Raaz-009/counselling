@@ -107,7 +107,8 @@ $conn->close();
                                 </select>
                             </div>
                             <button type="submit" class="btn btn-primary btn-block">SignUp</button>
-                        </form>
+                        </form><br>
+                        <a href="login.php">Already have an account? Login here</a>
                     </div>
                 </div>
             </div>
