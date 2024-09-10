@@ -18,7 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt->bind_result($id, $full_name, $email, $db_password, $user_type);
             $stmt->fetch();
             
-            if ($password == $db_password) {  // Plain password comparison
+            if (password_verify($password,$db_password)) { 
                 $_SESSION['username'] = $username;
                 $_SESSION['email'] = $email;
                 $_SESSION['user_type'] = $user_type;
@@ -27,7 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $error ="success";
                 exit();
             } else {
-                $error = "Invalid password.";
+                $error = "Invalid password.".$db_password;
             }
         } else {
             $error = "Invalid username or password.";
