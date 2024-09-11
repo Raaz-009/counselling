@@ -184,3 +184,31 @@
     width: 50%;
     margin: 0 auto;
 }
+
+
+.btn-add-student {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    border-radius: 10px;
+    padding-top: 15px;
+    background-color: #42c3ca; /* Green color */
+    color: white;
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    z-index: 1000; /* Ensure it's on top */
+    font-weight: bold;
+}
+
+.btn-add-student:hover {
+    background-color: #218838;
+    text-decoration: none;
+}
+
+.btn-add-student svg {
+    width: 50px;
+    height: 24px;
+}

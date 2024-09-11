@@ -10,29 +10,41 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = $_POST['password'];
     $user_type = $_POST['user_type'];
 
+    // Check if all required fields are filled
     if (empty($full_name) || empty($username) || empty($email) || empty($password) || empty($user_type)) {
-        die("Please fill in all required fields.");
+        $error = "Please fill in all required fields.";
     }
 
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        die("Invalid email format.");
+    // Check if the email is in valid format
+    elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $error = "Invalid email format.";
     }
 
-    $password_hashed = password_hash($password, PASSWORD_BCRYPT);
+    // Proceed to insert data if there are no validation errors
+    else {
+        $password_hashed = password_hash($password, PASSWORD_BCRYPT);
 
-    $stmt = $conn->prepare("INSERT INTO users (Full_Name, username, phone_number, email, password, user_type) VALUES (?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("ssssss", $full_name, $username, $phone_number, $email, $password_hashed, $user_type);
+        // Prepare the SQL statement
+        $stmt = $conn->prepare("INSERT INTO users (Full_Name, username, phone_number, email, password, user_type) VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("ssssss", $full_name, $username, $phone_number, $email, $password_hashed, $user_type);
 
-    if ($stmt->execute()) {
-        $_SESSION['username'] = $username;
-        $_SESSION['email'] = $email;
-        $_SESSION['user_type'] = $user_type;
-        $_SESSION['Full_Name'] = $full_name;
-    } else {
-        $error = "Error: " . $stmt->error;
+        // Execute the statement and handle success or failure
+        if ($stmt->execute()) {
+            // Set session variables for the user
+            $_SESSION['username'] = $username;
+            $_SESSION['email'] = $email;
+            $_SESSION['user_type'] = $user_type;
+            $_SESSION['Full_Name'] = $full_name;
+
+            // Redirect to the login page after successful signup
+            header("Location: login.php");
+            exit(); // Ensure no further code is executed
+        } else {
+            $error = "Error: " . $stmt->error;
+        }
+
+        $stmt->close();
     }
-
-    $stmt->close();
 }
 
 $conn->close();
@@ -46,14 +58,11 @@ $conn->close();
     <title>SignUp Page</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <style>
-        /* Hide increment and decrement buttons in WebKit browsers (Chrome, Safari) */
         input[type="number"]::-webkit-inner-spin-button,
         input[type="number"]::-webkit-outer-spin-button {
             -webkit-appearance: none;
             margin: 0;
         }
-
-        /* Hide increment and decrement buttons in Firefox */
         input[type="number"] {
             -moz-appearance: textfield;
         }
@@ -70,13 +79,11 @@ $conn->close();
                     </div>
                     <div class="card-body">
                         <?php
+                        // Display error messages if any
                         if (isset($error)) {
                             echo '<div class="alert alert-danger" role="alert">' . $error . '</div>';
-                        } elseif (isset($success)) {
-                            echo '<div class="alert alert-success" role="alert">' . $success . '</div>';
                         }
                         ?>
-                        <!-- user_id	Full_Name	username	phone_number	email	password	user_type	 -->
                         <form method="post" action="">
                             <div class="mb-3">
                                 <label for="username" class="form-label">Username</label>
@@ -92,7 +99,7 @@ $conn->close();
                             </div>
                             <div class="mb-3">
                                 <label for="phone_number" class="form-label">Phone</label>
-                                <input type="number" class="form-control" id="phone_number" name="phone_number" min=0 required>
+                                <input type="number" class="form-control" id="phone_number" name="phone_number" min="0" required>
                             </div>
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email</label>
@@ -102,11 +109,11 @@ $conn->close();
                                 <label for="user_type" class="form-label">Role</label>
                                 <select id="user_type" name="user_type" class="form-select" required>
                                     <option value="" disabled selected>Select your role</option>
-                                    <option value="student">Student</option>
+                                    <option value="admin">Admin</option>
                                     <option value="faculty">Faculty</option>
                                 </select>
                             </div>
-                            <button type="submit" class="btn btn-primary btn-block">SignUp</button>
+                            <button type="submit" class="btn btn-primary btn-block">Sign Up</button>
                         </form><br>
                         <a href="login.php">Already have an account? Login here</a>
                     </div>
