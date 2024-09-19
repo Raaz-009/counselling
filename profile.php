@@ -62,9 +62,9 @@ $conn->close();
   </div>
 
   <ul>
-    <li> <a href="./"><i class="fa fa-home"></i>  Home</a></li>  <hr>
+    <li> <a href="./index.php"><i class="fa fa-home"></i>  Home</a></li>  <hr>
     
-    <li><a href=""> <i class="fa fa-graduation-cap"></i>Home</a></li> <hr>
+    <li><a href="./department_students.php"> <i class="fa fa-graduation-cap"></i>Department</a></li> <hr>
   </ul>
   <div class="logout">
     <a class="btn btn-danger" href="./logout.php"> <i class="fa fa-power-off"></i>      Logout</a>

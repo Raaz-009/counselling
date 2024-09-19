@@ -1,9 +1,6 @@
 .sideNavBar{
-    background: linear-gradient(70deg,
-            #56dbe2 0%,
-            #42c3ca 50%,
-            #42c3cac7 75%) !important;
-               width: 18vw;
+    background: #666c5b;
+    width: 18vw;
     height: 100vh; 
     position: fixed;
     z-index: 2;

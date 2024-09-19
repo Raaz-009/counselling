@@ -27,30 +27,9 @@ $conn->close();
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="./files/css/index.css">
     <link rel="stylesheet" href="./files/css/style.css">
-    <style>
-        .navbar{
-            background: #666c5b !important;
-        }
 
-        .sidebar {
-            height: 100vh;
-            position: fixed;
-            top: 0;
-            left: 0;
-            padding-top: 5px;
-            background-color: #666c5b;
-            border-right: 1px solid #dee2e6;
-            margin-top: 56px !important;
-        }
-        .main-content {
-            margin-left: 250px;
-            padding: 20px;
-        }
-    </style>
 </head>
 <body>
-
-
 <nav class="navbar navBar navbar-expand-lg navbar-dark" style="background-color: #666c5b !important;">
     <div class="container-fluid">
       <a class="navbar-brand fw-bold" href="#">Orientation</a>
@@ -102,6 +81,7 @@ $conn->close();
             <nav class="my-5 col-md-3 col-lg-2 d-md-block sidebar">
                 <div class="position-sticky">
                     <ul class="nav flex-column">
+                    <hr style="margin-top: -5px; margin-left:-12px; color: white; width:250px;">
                         <?php foreach ($branches as $branch): ?>
                             <li class="nav-item">
                                 <a class="nav-link" href="batch_departments.php?branch=<?= urlencode($branch) ?>">
