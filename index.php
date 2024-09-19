@@ -7,74 +7,51 @@ if (!isset($_SESSION['username'])) {
     exit();
 }
 
-$searchTerm = isset($_GET['q']) ? $_GET['q'] : '';
-
-$sql = "SELECT student_details.id, student_details.name, student_details.usn, student_details.branch, student_details.semester, student_details.section";
-$sql .= " FROM student_details";
-$whereClause = "";
-
-if ($searchTerm) {
-  $whereClause .= " (name LIKE '%$searchTerm%' OR usn LIKE '%$searchTerm%' OR branch = '$searchTerm' OR semester = '$searchTerm')"; // Use = for numeric comparison
-}
-
-// Move GROUP BY after WHERE clause (if any)
-if ($whereClause) {
-  $sql .= " WHERE $whereClause";
-}
-
-$sql .= " GROUP BY branch, semester, section";
-
-$result = $conn->query($sql);
-$students = '';
-
-if ($result->num_rows > 0) {
-  while ($row = $result->fetch_assoc()) {
-    $branch = $row['branch'];
-    $section = $row['section'];
-    $semester = $row['semester'];
-    $id = $row['id'];
-    $students .= '
-      <div class="col-md">
-        <div class="solution_cards_box sol_card_top_3">
-          <div class="solution_card">
-            <div class="hover_color_bubble"></div>
-            <div class="so_top_icon">
-            <h3>batch: ' . $branch . '</h3>
-
-            </div>
-            <div class="solu_title">
-              <h3>Semester ' . $semester . '</h3>
-            </div>
-            <div class="solu_description">
-              <p> ' . $section . ' Section</p>
-              <a href="./students.php?branch=' . $branch . '&sem='.$semester.'&sec='.$section.'" type="button" class="read_more_btn">View More</a>
-            </div>
-          </div>
-        </div>
-      </div>';
-  }
-} else {
-  $students = "<p>No student found</p>";
+// Fetch all unique branches
+$branch_query = "SELECT DISTINCT branch FROM student_details ORDER BY branch";
+$branch_result = $conn->query($branch_query);
+$branches = [];
+while ($row = $branch_result->fetch_assoc()) {
+    $branches[] = $row['branch'];
 }
 
 $conn->close();
 ?>
 
-
-
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Home</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-  <link rel="stylesheet" href="./files/css/index.css">
-  <link rel="stylesheet" href="./files/css/style.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Home</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./files/css/index.css">
+    <link rel="stylesheet" href="./files/css/style.css">
+    <style>
+        .navbar{
+            background: #666c5b !important;
+        }
 
+        .sidebar {
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding-top: 5px;
+            background-color: #666c5b;
+            border-right: 1px solid #dee2e6;
+            margin-top: 56px !important;
+        }
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+    </style>
 </head>
 <body>
-  <nav class="navbar navBar navbar-expand-lg navbar-dark" style="background-color: #d8e6c3;">
+
+
+<nav class="navbar navBar navbar-expand-lg navbar-dark" style="background-color: #666c5b !important;">
     <div class="container-fluid">
       <a class="navbar-brand fw-bold" href="#">Orientation</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -119,24 +96,32 @@ $conn->close();
     </div>
   </nav>
 
-  <div class="container cardsContainer">
-    <div class="section_our_solution">
-      <div class="row" id="results">
-        <?php echo $students; ?>
-      </div>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar for branches -->
+            <nav class="my-5 col-md-3 col-lg-2 d-md-block sidebar">
+                <div class="position-sticky">
+                    <ul class="nav flex-column">
+                        <?php foreach ($branches as $branch): ?>
+                            <li class="nav-item">
+                                <a class="nav-link" href="batch_departments.php?branch=<?= urlencode($branch) ?>">
+                                    branch: <?= htmlspecialchars($branch) ?>
+                                </a>
+                            </li>
+                            <hr>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
+            </nav>
+
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 main-content">
+                <h2 class="mt-4">Welcome to Student Management System</h2>
+                <p>Select a branch from the sidebar to view departments.</p>
+            </main>
+        </div>
     </div>
-  </div>
-  <div class="addbtn">
-    
-  <a href="./add_student.php" class="btn btn-primary btn-add-student">
-    <p>Add Student</p>
-    
-    </svg>
-  </a>
 
-  </div>
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-<script src="./files/js/main.js"></script></body>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="./files/js/main.js"></script>
+</body>
 </html>
-  
