@@ -114,15 +114,20 @@ $conn->close();
     <div class="container">
         <div class="row">
             <?php while ($row = $result->fetch_assoc()): ?>
-                <div class="col-md-4 col-xl-3 mb-4">
+                <div class="col-md-4  mb-4">
                     <div class="card">
                         <div class="card-body" style="background-color: #fff;">
-                            <p class="card-text"><strong>Name:</strong> <?= htmlspecialchars($row['name']) ?></p>
-                            <p class="card-text"><strong>USN:</strong> <?= htmlspecialchars($row['usn']) ?></p>
-                            <p class="card-text"><strong>Semester:</strong> <?= htmlspecialchars($row['semester']) ?></p>
-                            <p class="card-text"><strong>Section:</strong> <?= htmlspecialchars($row['section']) ?></p>
-                            <p class="card-text"><strong>Branch:</strong> <?= htmlspecialchars($row['branch']) ?></p>
-                            <a href="profile.php?id=<?= $row['id'] ?>" class="btn btn-primary">View Details</a>
+                      <div  class="row">
+                      <p class="card-text col-md-6 name-text"><strong>Name:</strong> <?= htmlspecialchars($row['name']) ?></p>
+                      <p class="card-text col-md-6"><strong>USN:</strong> <?= htmlspecialchars($row['usn']) ?></p>
+                      </div>
+                      <div class="row">
+                      <p class="card-text  col-md-4"><strong>Semester:</strong> <?= htmlspecialchars($row['semester']) ?></p>
+                            <p class="card-text col-md-4"><strong>Section:</strong> <?= htmlspecialchars($row['section']) ?></p>
+                            <p class="card-text col-md-4"><strong>Branch:</strong> <?= htmlspecialchars($row['branch']) ?></p>
+                      </div>
+                            
+                            <a href="profile.php?id=<?= $row['id'] ?>" class="btn btn-outline-primary viewDetailsbtn">View Details</a>
                         </div>
                     </div>
                 </div>

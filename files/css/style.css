@@ -51,4 +51,34 @@ body{
     height: fit-content;
     display: grid;
     font-size: 15px;
+    border-radius: 10px;
+    box-shadow: 1px 1px 7px #00496e6f;
+    
+    /* width: max-content; */
+}
+.card-text {
+    font-size: 15px;
+    font-weight:500;
+    width: auto;
+    
+
+}
+
+.card-text strong{
+    color: #00496e;
+}
+
+.viewDetailsbtn{
+    color: #00496e !important;
+    border: 1px solid #00496e;
+
+}
+.viewDetailsbtn:hover{
+    background-color: #00496e !important;
+    color: white !important;
+}
+
+.name-text{
+    background-color: #00496e1a;
+    border-radius: 5px;
 }

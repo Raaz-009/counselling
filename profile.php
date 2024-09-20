@@ -1,18 +1,52 @@
 <?php
 include("./config.php");
+
 session_start();
 
+// Check if user is logged in
 if (!isset($_SESSION['username'])) {
     header("Location: login.php");
     exit();
 }
+
+// Fetch logged-in user's full name
 $loggedName = $_SESSION['Full_Name'];
-$id = intval($_GET['id']);
 
-if (isset($_GET['id'])) {
+// Ensure the student ID is provided in the URL
+if (isset($_GET['id']) && is_numeric($_GET['id'])) {
     $id = intval($_GET['id']);
+    
+    // Check if student already exists in the 'socials' table
+    $sql_check = "SELECT * FROM socials WHERE student_id = ?";
+    if ($stmt_check = $conn->prepare($sql_check)) {
+        $stmt_check->bind_param("i", $id);
+        $stmt_check->execute();
+        $stmt_check->store_result();
+        
+        if ($stmt_check->num_rows > 0) {
+            echo "Student already exists!";
+        } else {
+            // If student doesn't exist, insert into 'socials' table
+            $sql_studentSocial = "INSERT INTO socials (student_id) VALUES (?)";
+            if ($stmt = $conn->prepare($sql_studentSocial)) {
+                $stmt->bind_param("i", $id);
+                if ($stmt->execute()) {
+                    echo "Student added successfully!";
+                } else {
+                    echo "Error inserting student: " . $stmt->error;
+                }
+                $stmt->close();
+            } else {
+                echo "Error preparing SQL: " . $conn->error;
+            }
+        }
+        $stmt_check->close();
+    } else {
+        echo "Error preparing SQL: " . $conn->error;
+    }
 
-    $stmt = $conn->prepare("
+    // Fetch student details
+    $sql_studentDetails = "
         SELECT 
             sd.name, sd.usn, sd.Bio, sd.email, sd.phone, sd.department, sd.semester, sd.tenth_aggr, sd.twelveth_aggr, sd.engg_aggr,
             pd.technical_skills, pd.technology_interested_in, pd.professional_skills, pd.certification, pd.professional_bodies, pd.professional_role, pd.projects, pd.internships, pd.areas_of_interest, pd.counsellor,
@@ -21,24 +55,31 @@ if (isset($_GET['id'])) {
         LEFT JOIN professional_details pd ON sd.id = pd.student_id
         LEFT JOIN socials s ON sd.id = s.student_id
         WHERE sd.id = ?
-    ");
-    $stmt->bind_param("i", $id);
-    $stmt->execute();
-    $result = $stmt->get_result();
+    ";
 
-    if ($result->num_rows > 0) {
-        $student = $result->fetch_assoc();
+    if ($stmt = $conn->prepare($sql_studentDetails)) {
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            $student = $result->fetch_assoc();
+        } else {
+            echo "No student found";
+            exit();
+        }
+        $stmt->close();
     } else {
-        echo "No student found";
-        exit();
+        echo "Error preparing SQL: " . $conn->error;
     }
 
-    $stmt->close();
+    // Parse technical skills if available
+    $technical_skills = isset($student['technical_skills']) ? explode(',', $student['technical_skills']) : [];
+
 } else {
-    echo "No student ID specified";
+    echo "No valid student ID specified";
     exit();
 }
-$technical_skills = isset($student['technical_skills']) ? explode(',', $student['technical_skills']) : [];
 
 $conn->close();
 ?>
@@ -62,14 +103,16 @@ $conn->close();
   </head>
   <body>
 <div class="sideNavBar">
-  <div class="logo">
-    <!-- <img src="./images/githubLogo.png" alt=""> -->
-  </div>
+
 
   <ul>
-    <li> <a href="./index.php"><i class="fa fa-home"></i>  Home</a></li>  <hr>
+  <li style="background:#fff;">
+    <h4 style=" margin-left:20px">Orientation</h4>
+  </li> 
+
+    <li> <a href="./index.php"><i class="fa fa-home"></i>  Home</a></li> 
     
-    <li><a href="./department_students.php"> <i class="fa fa-graduation-cap"></i>Departments</a></li> <hr>
+    <li><a href="./department_students.php"> <i class="fa fa-graduation-cap"></i>Departments</a></li>
   </ul>
   <div class="logout">
     <a class="btn btn-danger" href="./logout.php"> <i class="fa fa-power-off"></i>      Logout</a>

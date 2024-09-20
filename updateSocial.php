@@ -3,6 +3,7 @@ include("./config.php");
 
 $linkedin = $github = $resume = $photo = "";
 $student_id = $_GET['id'] ?? '';
+$error_message = '';
 
 if ($student_id != '') {
     $sql = "SELECT * FROM socials WHERE student_id = ?";
@@ -45,13 +46,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $stmt = $conn->prepare($sql);
     $stmt->bind_param($types, ...$params);
-    $stmt->execute();
-    $stmt->close();
 
-    header("Location: ./profile.php?id={$student_id}");
-    exit();
+    // Check if the update is successful
+    if ($stmt->execute()) {
+        header("Location: ./profile.php?id={$student_id}");
+        exit();
+    } else {
+        $error_message = "Error updating record: " . $conn->error;
+    }
+
+    $stmt->close();
 }
+$conn->close();
 ?>
+
+
+
 
 <!DOCTYPE html>
 <html lang="en">
