@@ -54,17 +54,22 @@ $conn->close();
     <link rel="stylesheet" href="./style.css">
     <link rel="stylesheet" href="./files/css/sideBar.css">
     <link rel="stylesheet" href="./files/css/topBar.css">
+    <style>
+      body{
+        background:#00496e1a;
+      }
+    </style>
   </head>
   <body>
 <div class="sideNavBar">
   <div class="logo">
-    <img src="./images/githubLogo.png" alt="">
+    <!-- <img src="./images/githubLogo.png" alt=""> -->
   </div>
 
   <ul>
     <li> <a href="./index.php"><i class="fa fa-home"></i>  Home</a></li>  <hr>
     
-    <li><a href="./department_students.php"> <i class="fa fa-graduation-cap"></i>Department</a></li> <hr>
+    <li><a href="./department_students.php"> <i class="fa fa-graduation-cap"></i>Departments</a></li> <hr>
   </ul>
   <div class="logout">
     <a class="btn btn-danger" href="./logout.php"> <i class="fa fa-power-off"></i>      Logout</a>
@@ -91,7 +96,7 @@ $conn->close();
 <div class="bodyContents">
 
 <div class="row">
-  <div class="bioContent col-md">
+  <div style="margin-left:10px;" class="bioContent col-md">
     <div class="nameBio">
       <img src="./images/user-icon-1024x1024-dtzturco.png" alt="">
     

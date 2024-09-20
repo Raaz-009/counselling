@@ -30,7 +30,7 @@ $conn->close();
 
 </head>
 <body>
-<nav class="navbar navBar navbar-expand-lg navbar-dark" style="background-color: #666c5b !important;">
+<nav class="navbar navBar navbar-expand-lg navbar-dark" style="background-color: #00496e !important;">
     <div class="container-fluid">
       <a class="navbar-brand fw-bold" href="#">Orientation</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -84,11 +84,11 @@ $conn->close();
                     <hr style="margin-top: -5px; margin-left:-12px; color: white; width:250px;">
                         <?php foreach ($branches as $branch): ?>
                             <li class="nav-item">
-                                <a class="nav-link" href="batch_departments.php?branch=<?= urlencode($branch) ?>">
+                                <a class="nav-link side-link" href="batch_departments.php?branch=<?= urlencode($branch) ?>">
                                     branch: <?= htmlspecialchars($branch) ?>
                                 </a>
                             </li>
-                            <hr>
+                            
                         <?php endforeach; ?>
                     </ul>
                 </div>

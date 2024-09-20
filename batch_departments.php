@@ -89,11 +89,11 @@ $conn->close();
                         <hr style="margin-top: -5px; margin-left:-12px; color: white; width:250px;">
                         <?php foreach ($departments as $dept): ?>
                             <li class="nav-item">
-                                <a class="nav-link" href="department_students.php?branch=<?= urlencode($branch) ?>&dept=<?= urlencode($dept) ?>">
+                                <a class="nav-link side-link" href="department_students.php?branch=<?= urlencode($branch) ?>&dept=<?= urlencode($dept) ?>">
                                     <?= htmlspecialchars($dept) ?>
                                 </a>
                             </li>
-                            <hr>
+                            
                         <?php endforeach; ?>
                     </ul>
                 </div>
