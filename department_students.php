@@ -8,24 +8,31 @@ if (!isset($_SESSION['username'])) {
 }
 
 $department = isset($_GET['dept']) ? $_GET['dept'] : '';
+$batch = $_GET['branch'];
 
 // Fetch all unique departments for the sidebar
-$dept_query = "SELECT DISTINCT department FROM student_details ORDER BY department";
+$dept_query = "SELECT DISTINCT department FROM student_details  where branch = '$batch'  ORDER BY department ";
 $dept_result = $conn->query($dept_query);
 $departments = [];
 while ($row = $dept_result->fetch_assoc()) {
     $departments[] = $row['department'];
 }
-
-// Fetch students of the selected department
-$student_query = "SELECT id, name, usn, semester, section, branch FROM student_details WHERE department = ? ORDER BY name";
+// Fetch students of the selected department and batch
+$student_query = "
+    SELECT id, name, usn, semester, section, branch 
+    FROM student_details 
+    WHERE department = ? 
+    AND branch = ? 
+    ORDER BY name";
+    
 $stmt = $conn->prepare($student_query);
-$stmt->bind_param("s", $department);
+$stmt->bind_param("ss", $department, $batch);  // Bind both department and batch
 $stmt->execute();
 $result = $stmt->get_result();
 
 $conn->close();
 ?>
+
 
 <!doctype html>
 <html lang="en">
@@ -92,8 +99,8 @@ $conn->close();
                         <?php foreach ($departments as $dept): ?>
                             <li class="nav-item">
                                 <a class="nav-link <?= ($dept == $department) ? 'active' : '' ?>" 
-                                   href="department_students.php?dept=<?= urlencode($dept) ?>">
-                                    <?= htmlspecialchars($dept) ?>
+                                   href="department_students.php?dept=<?= urlencode($dept) ?>&branch=<?=urldecode($batch)?>">
+                                    <?= htmlspecialchars($dept) ?> 
                                 </a>
                             </li>
                             <hr>
