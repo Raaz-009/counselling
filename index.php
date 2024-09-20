@@ -51,7 +51,6 @@ $conn->close();
             <div class="dropdown-menu">
               <ul>
                 <li><a class="dropdown-item" href="./add_student.php">Add Student Details</a></li>
-                <li><a class="dropdown-item" href="#">Mega Menu Link</a></li>
 
               </ul>
             </div>
@@ -62,15 +61,12 @@ $conn->close();
             &nbsp;
             &nbsp;
           </li>
-          <li class="nav-item">
-            <a class="btn btn-danger" href="./logout.php">Logout</a>
-          </li>
+          
 
         </ul>
-        <form class="d-flex" role="search" id="searchForm">
-          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="searchBar">
-          <button class="btn btn-outline-light" type="submit">Search</button>
-        </form>
+            <a class="btn btn-danger" href="./logout.php">Logout</a>
+          
+
       </div>
     </div>
   </nav>

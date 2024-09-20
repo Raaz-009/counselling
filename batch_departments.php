@@ -56,7 +56,7 @@ $conn->close();
             <div class="dropdown-menu">
               <ul>
                 <li><a class="dropdown-item" href="./add_student.php">Add Student Details</a></li>
-                <li><a class="dropdown-item" href="#">Mega Menu Link</a></li>
+              
 
               </ul>
             </div>

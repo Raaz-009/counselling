@@ -66,7 +66,7 @@ $conn->close();
             <div class="dropdown-menu">
               <ul>
                 <li><a class="dropdown-item" href="./add_student.php">Add Student Details</a></li>
-                <li><a class="dropdown-item" href="#">Mega Menu Link</a></li>
+                
 
               </ul>
             </div>
@@ -110,36 +110,26 @@ $conn->close();
             </nav>
 
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 main-content">
-                <h2 class="mt-4"><?= htmlspecialchars($department) ?> Students</h2>
-                <div class="table-responsive">
-                    <table class="table table-striped table-sm">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>USN</th>
-                                <th>Semester</th>
-                                <th>Section</th>
-                                <th>Batch</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php while ($row = $result->fetch_assoc()): ?>
-                                <tr>
-                                    <td><?= htmlspecialchars($row['name']) ?></td>
-                                    <td><?= htmlspecialchars($row['usn']) ?></td>
-                                    <td><?= htmlspecialchars($row['semester']) ?></td>
-                                    <td><?= htmlspecialchars($row['section']) ?></td>
-                                    <td><?= htmlspecialchars($row['branch']) ?></td>
-                                    <td>
-                                        <a href="profile.php?id=<?= $row['id'] ?>" class="btn btn-sm btn-primary">View Details</a>
-                                    </td>
-                                </tr>
-                            <?php endwhile; ?>
-                        </tbody>
-                    </table>
+    <h2 class="mt-4"><?= htmlspecialchars($department) ?> Students</h2>
+    <div class="container">
+        <div class="row">
+            <?php while ($row = $result->fetch_assoc()): ?>
+                <div class="col-md-4 col-xl-3 mb-4">
+                    <div class="card">
+                        <div class="card-body" style="background-color: #fff;">
+                            <p class="card-text"><strong>Name:</strong> <?= htmlspecialchars($row['name']) ?></p>
+                            <p class="card-text"><strong>USN:</strong> <?= htmlspecialchars($row['usn']) ?></p>
+                            <p class="card-text"><strong>Semester:</strong> <?= htmlspecialchars($row['semester']) ?></p>
+                            <p class="card-text"><strong>Section:</strong> <?= htmlspecialchars($row['section']) ?></p>
+                            <p class="card-text"><strong>Branch:</strong> <?= htmlspecialchars($row['branch']) ?></p>
+                            <a href="profile.php?id=<?= $row['id'] ?>" class="btn btn-primary">View Details</a>
+                        </div>
+                    </div>
                 </div>
-            </main>
+            <?php endwhile; ?>
+        </div>
+    </div>
+</main>
         </div>
     </div>
 

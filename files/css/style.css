@@ -30,6 +30,7 @@ body{
     
 }
 
+
 .side-link:hover{
     color:black;
     background: #00496e70;
@@ -38,4 +39,16 @@ body{
 .sideActive{
     color: black !important;
     background: #00496e70;
+}
+
+
+/* -----------------card-------------------- */
+.container{
+    justify-content: space-evenly;
+}
+
+.card-body{
+    height: fit-content;
+    display: grid;
+    font-size: 15px;
 }
